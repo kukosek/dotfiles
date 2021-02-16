@@ -1,0 +1,218 @@
+# set modifier
+set $super Mod4
+set $alt Mod1
+
+#gaps
+gaps inner 15
+gaps outer 0
+
+# rounded
+smart_borders on
+smart_borders no_gaps
+border_radius 10
+
+#polybar
+exec_always --no-startup-id ~/.config/polybar/launch.sh --forest
+
+# program that remembers preffered layout for each program
+exec_always --no-startup-id xkb-switch --i3
+
+# keyboard layots
+exec_always setxkbmap -option 'grp:alt_shift_toggle' -layout us,cz -variant ,qwerty
+
+# alternating layout (auto resize)
+exec_always --no-startup-id ~/.config/i3/i3-alternating-layout/alternating_layouts.py
+
+#background
+exec_always feh --randomize --bg-fill ~/wallpapers/*
+
+#eye candy
+exec_always picom --experimental-backends --backend glx
+
+#clipboard manager
+exec_always clipit &
+
+#minimize
+# Make the currently focused window a scratchpad
+bindsym $super+Shift+minus move scratchpad
+
+# Show the first scratchpad window
+bindsym $super+minus scratchpad show
+
+# set font
+font pango: Hack 8
+
+# Use Mouse+$super to drag floating windows to their wanted position
+floating_modifier $super
+
+#autostart
+exec --no-startup-id hsetroot -center ~/.wallpaper.png
+exec --no-startup-id xsettingsd &
+
+# start a terminal
+bindsym $super+Return exec i3-sensible-terminal
+
+# start dmenu (a program launcher)
+bindsym $super+Shift+d exec --no-startup-id i3-dmenu-desktop --dmenu="dmenu -i -fn 'Hack:size=8'"
+bindsym $super+d exec --no-startup-id ~/.config/polybar/blocks/scripts/launcher.sh &
+# common appHacks
+bindsym $super+l exec i3lock -i ~/.wallpaper.png
+bindsym $super+Shift+w exec firefox
+bindsym $super+Shift+f exec thunar;workspace 3;focus
+bindsym $super+Shift+g exec geany
+
+
+# music control
+exec_always playerctld daemon
+bindsym XF86AudioNext exec playerctl next
+bindsym XF86AudioPrev exec playerctl previous
+bindsym XF86AudioPlay exec playerctl play-pause
+bindsym XF86AudioStop exec playerctl stop
+
+# Misc
+bindsym XF86Calculator exec gnome-calculator
+bindsym XF86Mail exec thunderbird
+bindsym XF86Explorer exec firefox
+bindsym XF86HomePage exec dolphin
+
+
+
+# suspend
+bindsym $super+XF86AudioStop exec systemctl suspend -i
+
+# kill focused window
+bindsym Ctrl+q kill
+bindsym $alt+F4 kill
+
+# change focus
+bindsym $super+Left focus left
+bindsym $super+Down focus down
+bindsym $super+Up focus up
+bindsym $super+Right focus right
+
+# move focused window
+bindsym $super+Shift+Left move left
+bindsym $super+Shift+Down move down
+bindsym $super+Shift+Up move up
+bindsym $super+Shift+Right move right
+
+# split in horizontal orientation
+bindsym $super+h split h
+
+# split in vertical orientation
+bindsym $super+v split v
+
+# enter fullscreen mode for the focused container
+bindsym $super+f fullscreen toggle
+
+# change container layout split
+bindsym $super+s layout toggle split
+
+# toggle tiling / floating
+bindsym $super+space floating toggle
+
+# change focus between tiling / floating windows
+bindsym $super+Shift+space focus mode_toggle
+
+#printscreen
+bindsym Ctrl+Print exec ksnip -r
+bindsym Print exec ksnip -m
+bindsym Shift+Print exec ksnip -a
+
+# switch to workspace
+bindsym $alt+Control+Right workspace next
+bindsym $super+Tab workspace next_on_output
+bindsym $super+Shift+Tab workspace prev_on_output
+bindsym $alt+Control+Left workspace prev
+bindsym $super+o exec ~/.config/i3/next_blank_workspace.py
+bindsym $super+Shift+o exec ~/.config/i3/next_blank_workspace.py -m
+bindsym $super+1 workspace 1
+bindsym $super+2 workspace 2
+bindsym $super+3 workspace 3
+bindsym $super+4 workspace 4
+bindsym $super+5 workspace 5
+bindsym $super+6 workspace 6
+bindsym $super+7 workspace 7
+bindsym $super+8 workspace 8
+bindsym $super+9 workspace 9
+bindsym $super+0 workspace 10
+
+# move focused container to workspace
+bindsym $super+Shift+1 move container to workspace 1
+bindsym $super+Shift+2 move container to workspace 2
+bindsym $super+Shift+3 move container to workspace 3
+bindsym $super+Shift+4 move container to workspace 4
+bindsym $super+Shift+5 move container to workspace 5
+bindsym $super+Shift+6 move container to workspace 6
+
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $super+Shift+r restart
+
+# exit i3
+#bindsym $super+q exec "i2-nagbar -t warning -m 'Really, exit?' -b 'Yes' 'i3-msg exit'"
+
+# resize window (you can also use the mouse for that)
+mode "resize" {
+        bindsym Left resize shrink width 5 px or 5 ppt
+        bindsym Down resize grow height 5 px or 5 ppt
+        bindsym Up resize shrink height 5 px or 5 ppt
+        bindsym Right resize grow width 5 px or 5 ppt
+        bindsym Return mode "default"
+}
+bindsym $super+r mode "resize"
+
+
+# window rules, you can find the window class using xprop
+for_window [class=".*"] border pixel 2
+assign [class=URxvt] 1
+assign [class=Firefox|Transmission-gtk] 2
+assign [class=Thunar|File-roller] 3
+assign [class=Geany|Evince|Gucharmap|Soffice|libreoffice*] 4
+assign [class=Audacity|Vlc|mpv|Ghb|Xfburn|Gimp*|Inkscape] 5
+assign [class=Lxappearance|System-config-printer.py|Lxtask|GParted|Pavucontrol|Exo-helper*|Lxrandr|Arandr] 6
+for_window [class=Viewnior|feh|Audacious|File-roller|Lxappearance|Lxtask|Pavucontrol] floating enable
+for_window [class=URxvt|Firefox|Geany|Evince|Soffice|libreoffice*|mpv|Ghb|Xfburn|Gimp*|Inkscape|Vlc|Lxappearance|Audacity] focus
+for_window [class=Xfburn|GParted|System-config-printer.py|Lxtask|Pavucontrol|Exo-helper*|Lxrandr|Arandr] focus
+
+# colour of border, background, text, indicator, and child_border
+client.focused              #bf616a #2f343f #d8dee8 #bf616a #d8dee8
+client.focused_inactive     #2f343f #2f343f #d8dee8 #2f343f #2f343f
+client.unfocused            #2f343f #2f343f #d8dee8 #2f343f #2f343f
+client.urgent               #2f343f #2f343f #d8dee8 #2f343f #2f343f
+client.placeholder          #2f343f #2f343f #d8dee8 #2f343f #2f343f
+client.background           #2f343f
+# Review the lines below and append to ~/.config/i3/config
+
+## Volume control
+
+# Path to volume control, without trailing slash
+set $volumepath ~/i3-volume
+
+# Command for the status line
+#   ie: i3blocks, i3status
+set $statuscmd i3status
+
+# Signal used to update the status line
+#   i3blocks uses SIGRTMIN+10 by default
+#   i3status uses SIGUSR1 by default
+set $statussig SIGUSR1
+
+# Amount to increase/decrease volume as a percentage
+set $volumestep 5
+set $notif volnoti
+
+# pulseaudio-utils settings
+#
+# Symbolic name for sink (numeric index not supported)
+#   Recommended: comment out this setting and omit the -s option to use default sink
+#   List sink names: pacmd list-sinks | awk -F "[<>]" '/^\s+name: <.*>/{print $2}'
+#set $sinkname alsa_output.pci-0000_00_1b.0.analog-stereo
+
+# Using pulseaudio-utils (append "-s $sinkname" without quotes to override default sink)
+bindsym XF86AudioRaiseVolume exec --no-startup-id $volumepath/volume -t $statuscmd -u $statussig up $volumestep
+bindsym XF86AudioLowerVolume exec --no-startup-id $volumepath/volume -t $statuscmd -u $statussig down $volumestep
+bindsym XF86AudioMute        exec --no-startup-id $volumepath/volume -t $statuscmd -u $statussig mute
+
+
+# floating windows
+for_window [class="Blueman-manager"] floating enable, move absolute position center, resize set 400 300
