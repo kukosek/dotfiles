@@ -81,6 +81,13 @@ noremap <Down> <Nop>
 noremap <Left> <Nop>
 noremap <Right> <Nop>
 
+" Resize wins
+"
+map <S-Left> <C-w><
+map <S-Down> <C-w>-
+map <S-Up> <C-w>+
+map <S-Right> <C-w>>
+
 " Block mouse
 set mouse=
 
@@ -130,10 +137,6 @@ imap <C-j> <Plug>(coc-snippets-expand-jump)
 " Use <leader>x for convert visual selected code to snippet
 xmap <leader>x  <Plug>(coc-convert-snippet)
 
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 autocmd BufEnter *.tsx set filetype=typescript
