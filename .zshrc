@@ -3,6 +3,14 @@
 
 # Path to your oh-my-zsh installation.
 export ZSH="/home/lukas/.oh-my-zsh"
+export KUBE_EDITOR=vim
+export PATH=/home/lukas/.pgo/pgo:$PATH
+export PGOUSER=/home/lukas/.pgo/pgo/pgouser
+export PGO_CA_CERT=/home/lukas/.pgo/pgo/client.crt
+export PGO_APISERVER_URL='https://127.0.0.1:8443'
+export PGO_CLIENT_CERT=/home/lukas/.pgo/pgo/client.crt
+export PGO_CLIENT_KEY=/home/lukas/.pgo/pgo/client.key
+
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
@@ -20,6 +28,7 @@ export KDE_SESSION_VERSION="5"
 
 export GI_TYPELIB_PATH=/usr/lib/x86_64-linux-gnu/girepository-1.0/
 export GTK_USE_PORTAL=1
+
 
 # nase knihony
 
@@ -118,3 +127,9 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias dotfile='/usr/bin/git --git-dir=$HOME/dotfiles.git/ --work-tree=$HOME'
+[[ /usr/bin/kubectl ]] && source <(kubectl completion zsh)
+alias tree='tree -I node_modules'
+alias please='sudo'
+alias fucking='sudo'
+alias check='watch -n 1'
+alias neovide='~/.local/share/neovide'

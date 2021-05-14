@@ -215,4 +215,5 @@ bindsym XF86AudioMute        exec --no-startup-id $volumepath/volume -t $statusc
 
 
 # floating windows
-for_window [class="Blueman-manager"] floating enable, move absolute position center, resize set 400 300
+for_window [class="Blueman-manager"] floating enable, resize set 400 300
+for_window [class="Gnome-calculator"] floating enable, resize set 400 300

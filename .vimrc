@@ -13,11 +13,27 @@ set undodir=~/.vim/undodir
 set undofile
 set incsearch
 
+set guifont=Hack\ Nerd\ Font:h14
+
 let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/cpp/ycm/.ycm_extra_conf.py'
 
+" system clipboard
+nmap <c-c> "+y
+vmap <c-c> "+y
+nmap <c-v> "+p
+inoremap <c-v> <c-r>+
+cnoremap <c-v> <c-r>+
+
 call plug#begin('~/.vim/plugged')
+Plug 'xuhdev/vim-latex-live-preview', { 'for': 'tex' }
+Plug 'vim-latex/vim-latex', { 'for': 'tex' }
+Plug 'ianks/vim-tsx'
+Plug 'leafgarland/typescript-vim'
+Plug 'wakatime/vim-wakatime'
+Plug 'equal-l2/vim-base64'
 Plug 'morhetz/gruvbox'
 Plug 'lyuts/vim-rtags'
+Plug 'psliwka/vim-smoothie'
 
 "Choose autocompletion plugin
 "Plug 'ycm-core/YouCompleteMe'
@@ -94,6 +110,8 @@ set mouse=
 
 autocmd VimEnter,BufNewFile,BufReadPost * silent! call HardMode()
 
+au BufNewFile,BufRead *.ts set filetype=typescript
+au BufNewFile,BufRead *.tsx set filetype=typescript.tsx
 
 " Remap for rename current word
 nmap <F2> <Plug>(coc-rename)
@@ -139,8 +157,6 @@ xmap <leader>x  <Plug>(coc-convert-snippet)
 
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
-autocmd BufEnter *.tsx set filetype=typescript
-
 fun! TrimWhitespace()
     let l:save = winsaveview()
     keeppatterns %s/\s\+$//e
@@ -171,3 +187,9 @@ nnoremap <F5> :w <CR> :TermToggle <CR> !! <Cr>
 " Terminal go back to normal mode
 tnoremap <Esc> <C-\><C-n>
 tnoremap :q! <C-\><C-n>:q!<CR>
+vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
+
+" Find and replace current word
+vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
+
+nnoremap <leader><TAB> :tabn <CR>
