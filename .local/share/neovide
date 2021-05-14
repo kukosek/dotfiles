@@ -1,0 +1,2 @@
+neovide --multiGrid "$@" &
+disown %1
