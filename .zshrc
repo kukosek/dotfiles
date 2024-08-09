@@ -3,7 +3,7 @@
 
 # Path to your oh-my-zsh installation.
 export ZSH="/home/lukas/.oh-my-zsh"
-export KUBE_EDITOR=vim
+export KUBE_EDITOR=nvim
 export PATH=/home/lukas/.pgo/pgo:$PATH
 export PGOUSER=/home/lukas/.pgo/pgo/pgouser
 export PGO_CA_CERT=/home/lukas/.pgo/pgo/client.crt

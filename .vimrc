@@ -16,6 +16,7 @@ set incsearch
 set guifont=Hack\ Nerd\ Font:h14
 
 let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/cpp/ycm/.ycm_extra_conf.py'
+let g:fern#renderer = "nerdfont"
 
 " system clipboard
 nmap <c-c> "+y
@@ -34,20 +35,21 @@ Plug 'equal-l2/vim-base64'
 Plug 'morhetz/gruvbox'
 Plug 'lyuts/vim-rtags'
 Plug 'psliwka/vim-smoothie'
+Plug 'lambdalisue/vim-fern-renderer-nerdfont'
 
 "Choose autocompletion plugin
 "Plug 'ycm-core/YouCompleteMe'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc.nvim'
 Plug 'honza/vim-snippets'
 
-Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'lambdalisue/vim-nerdfont'
+
+Plug 'lambdalisue/fern.vim'
 Plug 'airblade/vim-gitgutter'
 
 Plug 'mbbill/undotree'
 Plug 'kien/ctrlp.vim'
 "Plug 'vim-syntastic/syntastic'
-Plug 'preservim/nerdtree'
 
 Plug 'ryanoasis/vim-devicons'
 Plug 'HerringtonDarkholme/yats.vim' " TS Syntax
@@ -78,16 +80,49 @@ let g:netrw_winsize = 25
 
 let g:ctrlp_use_caching = 0
 
-autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() |
-			\ quit | endif
-" Open the existing NERDTree on each new tab.
-autocmd BufWinEnter * silent NERDTreeMirror
+function! s:init_fern() abort
+  " Define NERDTree like mappings
+  nmap <buffer><expr>
+      \ <Plug>(fern-my-expand-or-collapse)
+      \ fern#smart#leaf(
+      \   "\<Plug>(fern-action-collapse)",
+      \   "\<Plug>(fern-action-expand)",
+      \   "\<Plug>(fern-action-collapse)",
+      \ )
+  nmap <buffer> <Enter> <Plug>(fern-my-expand-or-collapse)
+  nmap <buffer> o <Plug>(fern-action-open:edit)
+  nmap <buffer> go <Plug>(fern-action-open:edit)<C-w>p
+  nmap <buffer> t <Plug>(fern-action-open:tabedit)
+  nmap <buffer> T <Plug>(fern-action-open:tabedit)gT
+  nmap <buffer> i <Plug>(fern-action-open:split)
+  nmap <buffer> gi <Plug>(fern-action-open:split)<C-w>p
+  nmap <buffer> s <Plug>(fern-action-open:vsplit)
+  nmap <buffer> gs <Plug>(fern-action-open:vsplit)<C-w>p
+  nmap <buffer> ma <Plug>(fern-action-new-path)
+  nmap <buffer> P gg
 
-nnoremap <C-t> :NERDTreeToggle<CR>
-nnoremap <C-f> :NERDTreeFind<CR>
+  nmap <buffer> C <Plug>(fern-action-enter)
+  nmap <buffer> u <Plug>(fern-action-leave)
+  nmap <buffer> r <Plug>(fern-action-reload)
+  nmap <buffer> R gg<Plug>(fern-action-reload)<C-o>
+  nmap <buffer> cd <Plug>(fern-action-cd)
+  nmap <buffer> CD gg<Plug>(fern-action-cd)<C-o>
+
+  nmap <buffer> I <Plug>(fern-action-hidden-toggle)
+
+  nmap <buffer> q :<C-u>quit<CR>
+endfunction
+
+augroup fern-custom
+  autocmd! *
+  autocmd FileType fern setlocal norelativenumber | setlocal nonumber | call s:init_fern()
+augroup END
+
+nnoremap <C-t> :Fern . -drawer -toggle -reveal=1<CR>
+nnoremap <s>a open:above<CR>
+
 nnoremap <leader>u :UndotreeShow<CR>
 nnoremap <Leader>ps :Rg<SPACE>
-nnoremap <leader>n :NERDTreeFocus<CR>
 nnoremap <silent> <Leader>+ :vertical resize +5<CR>
 nnoremap <silent> <Leader>- :vertical resize -5<CR>
 
@@ -122,8 +157,8 @@ nmap <leader>f  <Plug>(coc-format-selected)
 
 " YCM
 " The best part.
-"nnoremap <silent> <Leader>gd :YcmCompleter GoTo<CR>
-"nnoremap <silent> <Leader>gf :YcmCompleter FixIt<CR>
+" nnoremap <silent> <Leader>gd :YcmCompleter GoTo<CR>
+" nnoremap <silent> <Leader>gf :YcmCompleter FixIt<CR>
 
 "cock keystrokes
 " Use `[g` and `]g` to navigate diagnostics
@@ -136,6 +171,7 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 inoremap <silent><expr> <c-space> coc#refresh()
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
 
 " Use <C-l> for trigger snippet expand.
 imap <C-l> <Plug>(coc-snippets-expand)
@@ -157,12 +193,12 @@ xmap <leader>x  <Plug>(coc-convert-snippet)
 
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
-fun! TrimWhitespace()
-    let l:save = winsaveview()
-    keeppatterns %s/\s\+$//e
-    call winrestview(l:save)
-endfun
-autocmd BufWritePre * :call TrimWhitespace()
+"fun! TrimWhitespace()
+"    let l:save = winsaveview()
+"    keeppatterns %s/\s\+$//e
+"    call winrestview(l:save)
+"endfun
+"autocmd BufWritePre * :call TrimWhitespace()
 
 "Syntax checking
 "set statusline+=%#warningmsg#
