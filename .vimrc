@@ -5,7 +5,13 @@ set tabstop=4 softtabstop=4
 set shiftwidth=4
 set smartindent
 set nu
-set nowrap
+
+set number 
+set textwidth=80
+set wrapmargin=0
+set formatoptions+=t
+set linebreak
+
 set smartcase
 set noswapfile
 set nobackup
@@ -79,6 +85,8 @@ let g:netrw_banner = 0
 let g:netrw_winsize = 25
 
 let g:ctrlp_use_caching = 0
+
+let g:livepreview_use_biber = 1
 
 function! s:init_fern() abort
   " Define NERDTree like mappings
